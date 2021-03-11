@@ -29,8 +29,8 @@ public class CraftEvent implements Listener {
             ItemStack item = event.getCurrentItem();
             // Check if the item can be enchanted
             // If it can, enchant it and change the item that was returned
-            if (randomEnchant.toolCheck.canWeEnchantThis(item)) {
-                ItemStack newItem = randomEnchant.toolCheck.randomEnchantment(item);
+            if (randomEnchant.itemCheck.canWeEnchantThis(item)) {
+                ItemStack newItem = randomEnchant.itemCheck.randomEnchantment(item);
                 event.setCurrentItem(newItem);
             }
         }

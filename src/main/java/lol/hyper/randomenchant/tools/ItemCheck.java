@@ -17,6 +17,9 @@ public class ItemCheck {
     // Hard code the different item types that we want to enchant
     public final String[] enchantableItems = { "pickaxe", "sword", "shovel", "axe", "hoe", "bow", "helmet", "chestplate", "leggings", "boots" };
 
+    // Store which materials are blacklisted
+    public final HashMap<String, Boolean> blackListedMaterials = new HashMap<>();
+
     /**
      * Checks if we can enchant the tool/armor.
      * @param item The item to check.
@@ -104,7 +107,7 @@ public class ItemCheck {
      * @return True if excluded, false if not.
      */
     private boolean isMaterialExcluded(String material) {
-        return randomEnchant.config.getStringList("excluded-materials").contains(material);
+        return blackListedMaterials.get(material);
     }
 
 

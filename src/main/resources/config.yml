@@ -28,13 +28,13 @@ items-to-be-enchanted:
     boots: true
 
 # This materials will be excluded from being enchanted.
-# Remove the hashtag to exclude the material.
-excluded-materials:
-  #- "wood"
-  #- "stone"
-  #- "iron"
-  #- "diamond"
-  #- "gold"
+# Set them to false to disable them.
+enabled-materials:
+  wood: true
+  stone: true
+  iron: true
+  diamond: true
+  gold: true
 
 # Should we enchant regardless if the enchant is for the tool/armor?
 # This won't check if the enchant is supported on the item.
@@ -43,4 +43,4 @@ excluded-materials:
 enchant-items-with-unsupported-enchants: true
 
 # No touch please :)
-config-version: 1
+config-version: 2
