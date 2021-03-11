@@ -38,10 +38,6 @@ public class ItemCheck {
             itemType = "bow";
         }
 
-        System.out.println("Item name: " + itemName);
-        System.out.println("Item type " + itemType);
-        System.out.println("Item mat " + itemMaterial);
-
         switch(itemType) {
             case "pickaxe":
                 if (randomEnchant.config.getBoolean("items-to-be-enchanted.tools.pickaxe")) {
