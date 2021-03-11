@@ -3,6 +3,8 @@
 
 RandomEnchant will randomly enchant tools and armor when you craft them.
 
+![Image](https://raw.githubusercontent.com/hyperdefined/RandomEnchant/master/example.gif)
+
 ## Features
 * Highly customizable.
     * Custom enchantment level ranges.
