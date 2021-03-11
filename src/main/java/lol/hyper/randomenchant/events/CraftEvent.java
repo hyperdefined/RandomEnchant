@@ -18,13 +18,15 @@ public class CraftEvent implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        // Check if the event was cancel so we don't break shit
+        // Also check if the item is air
+        if (event.isCancelled() || event.getCurrentItem().getType() == Material.AIR) {
+            return;
+        }
+
+        // If the item was clicked on the result slot of a crafting table
         if(event.getSlotType() == InventoryType.SlotType.RESULT) {
             ItemStack item = event.getCurrentItem();
-
-            // Ignore if there is not item clicked
-            if (item.getType() == Material.AIR) {
-                return;
-            }
             // Check if the item can be enchanted
             // If it can, enchant it and change the item that was returned
             if (randomEnchant.toolCheck.canWeEnchantThis(item)) {

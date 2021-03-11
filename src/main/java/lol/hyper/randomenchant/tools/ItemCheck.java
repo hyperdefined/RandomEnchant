@@ -14,6 +14,7 @@ public class ItemCheck {
         this.randomEnchant = randomEnchant;
     }
 
+    // Hard code the different item types that we want to enchant
     public final String[] enchantableItems = { "pickaxe", "sword", "shovel", "axe", "hoe", "bow", "helmet", "chestplate", "leggings", "boots" };
 
     /**
@@ -25,10 +26,12 @@ public class ItemCheck {
         String itemName = item.getType().toString().toLowerCase();
 
         // Check if the item is a tool or armor piece
+        // This is to filter out any item we don't want
         if (Arrays.stream(enchantableItems).noneMatch(itemName::contains)) {
             return false;
         }
 
+        // Hard code bows since it doesn't follow the same name conventions as armor/tools
         String itemType;
         String itemMaterial = null;
         if (!itemName.equals("bow")) {
@@ -38,6 +41,8 @@ public class ItemCheck {
             itemType = "bow";
         }
 
+        // Check the config first to see if the item is disabled
+        // Check the material type after to see if it's disabled
         switch(itemType) {
             case "pickaxe":
                 if (randomEnchant.config.getBoolean("items-to-be-enchanted.tools.pickaxe")) {
@@ -102,9 +107,15 @@ public class ItemCheck {
         return randomEnchant.config.getStringList("excluded-materials").contains(material);
     }
 
+
     // https://bukkit.org/threads/random-enchantment-on-an-item.280638/#post-2583381
+    /**
+     * Enchant an item randomly.
+     * @param item The item to enchant.
+     * @return The item with enchant(s) on them.
+     */
     public ItemStack randomEnchantment(ItemStack item) {
-        // Store all possible enchantments for the item
+        // Store all possible enchantments
         List<Enchantment> possible = new ArrayList<>();
 
         // Check if we are gonna use unsupported enchants
@@ -121,6 +132,7 @@ public class ItemCheck {
         }
 
         Random r = new Random();
+        // Get our min and max levels
         int minLevel = randomEnchant.config.getInt("enchantment-level-range.min");
         int maxLevel = randomEnchant.config.getInt("enchantment-level-range.max");
 
@@ -136,8 +148,12 @@ public class ItemCheck {
 
         // Add the enchants
         for (int i = 0; i < totalEnchants; i++) {
+            // Shuffle the list of enchants for more rng
             Collections.shuffle(possible);
+            // Get a random enchant from the list
             Enchantment chosen = possible.get((r.nextInt(possible.size())));
+            // Check if we want to use default vanilla limits
+            // If not, use the min and max from the config
             if (randomEnchant.config.getBoolean("enchantment-level-range.use-default-limits")) {
                 item.addUnsafeEnchantment(chosen, 1 + (int) (Math.random() * ((chosen.getMaxLevel() - 1) + 1)));
             } else {
@@ -146,8 +162,6 @@ public class ItemCheck {
                 item.addUnsafeEnchantment(chosen, randomLevel);
             }
         }
-
-        // Return the item even if it doesn't have any enchantments
         return item;
     }
 }
