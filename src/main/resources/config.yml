@@ -1,0 +1,46 @@
+# What should be the minimum and maximum enchantment level that is possible.
+enchantment-level-range:
+  min: 1
+  max: 10
+  # If you want to use vanilla's default min and max enchantment values, set this to true.
+  use-default-limits: true
+
+# How many enchantments should items receive.
+total-enchants-on-items:
+  min: 1
+  max: 10
+  # If you only want 1 enchantment to be used.
+  one-enchant: false
+
+# Change which items will be enchanted when crafted.
+items-to-be-enchanted:
+  tools:
+    pickaxe: true
+    sword: true
+    shovel: true
+    axe: true
+    hoe: true
+    bow: true
+  armor:
+    helmet: true
+    chestplate: true
+    leggings: true
+    boots: true
+
+# This materials will be excluded from being enchanted.
+# Remove the hashtag to exclude the material.
+excluded-materials:
+  #- "wood"
+  #- "stone"
+  #- "iron"
+  #- "diamond"
+  #- "gold"
+
+# Should we enchant regardless if the enchant is for the tool/armor?
+# This won't check if the enchant is supported on the item.
+# Example: sharpness on armor, silk touch on swords, etc.
+# If you set this to false, you will get correct enchantments for items.
+enchant-items-with-unsupported-enchants: true
+
+# No touch please :)
+config-version: 1

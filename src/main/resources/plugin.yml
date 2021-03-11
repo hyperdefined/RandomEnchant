@@ -1,0 +1,10 @@
+name: RandomEnchant
+version: ${project.version}
+main: lol.hyper.randomenchant.RandomEnchant
+api-version: 1.16
+authors: [ hyperdefined ]
+commands:
+  randomenchant:
+    aliases: [re]
+    usage: /randomenchant
+    description: Main command.
