@@ -3,6 +3,7 @@ package lol.hyper.randomenchant;
 import lol.hyper.randomenchant.commands.CommandRandomEnchant;
 import lol.hyper.randomenchant.events.CraftEvent;
 import lol.hyper.randomenchant.tools.ItemCheck;
+import lol.hyper.randomenchant.tools.Updater;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -32,6 +33,13 @@ public final class RandomEnchant extends JavaPlugin {
 
         Bukkit.getServer().getPluginManager().registerEvents(craftEvent, this);
 
+        new Updater(this, 89994).getVersion(version -> {
+            if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
+                logger.info("You are running the latest version.");
+            } else {
+                logger.info("There is a new version available! Please download at https://www.spigotmc.org/resources/randomenchant.89994/");
+            }
+        });
         Metrics metrics = new Metrics(this, 10627);
     }
 
