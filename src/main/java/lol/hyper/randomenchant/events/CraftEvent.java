@@ -1,7 +1,6 @@
 package lol.hyper.randomenchant.events;
 
 import lol.hyper.randomenchant.RandomEnchant;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -19,7 +18,7 @@ public class CraftEvent implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        // Check if the event was cancel so we don't break shit
+        // Check if the event was cancelled so we don't break shit
         // Also check if the item is null
         if (event.isCancelled() || event.getCurrentItem() == null) {
             return;
