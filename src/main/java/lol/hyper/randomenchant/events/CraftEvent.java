@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.ItemStack;
 
 public class CraftEvent implements Listener {
@@ -21,6 +22,12 @@ public class CraftEvent implements Listener {
         // Check if the event was cancel so we don't break shit
         // Also check if the item is null
         if (event.isCancelled() || event.getCurrentItem() == null) {
+            return;
+        }
+
+        // Check if the inventory is a furnace, the output of the furnace
+        // uses the same SlotType. we ignore furnaces
+        if (event.getInventory() instanceof FurnaceInventory) {
             return;
         }
 
