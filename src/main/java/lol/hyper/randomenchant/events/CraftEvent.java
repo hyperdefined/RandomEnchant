@@ -19,8 +19,8 @@ public class CraftEvent implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         // Check if the event was cancel so we don't break shit
-        // Also check if the item is air
-        if (event.isCancelled() || event.getCurrentItem().getType() == Material.AIR) {
+        // Also check if the item is null
+        if (event.isCancelled() || event.getCurrentItem() == null) {
             return;
         }
 
