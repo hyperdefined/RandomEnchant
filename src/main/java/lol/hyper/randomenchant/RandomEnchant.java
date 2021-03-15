@@ -11,6 +11,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public final class RandomEnchant extends JavaPlugin {
@@ -52,11 +54,11 @@ public final class RandomEnchant extends JavaPlugin {
         if (config.getInt("config-version") != CONFIG_VERSION) {
             logger.warning("You configuration is out of date! Some features may not work!");
         }
-        itemCheck.blackListedMaterials.clear();
-        itemCheck.blackListedMaterials.put("wood", config.getBoolean("enabled-materials.wood"));
+
+        itemCheck.blackListedMaterials.put("wooden", config.getBoolean("enabled-materials.wood"));
         itemCheck.blackListedMaterials.put("stone", config.getBoolean("enabled-materials.stone"));
         itemCheck.blackListedMaterials.put("iron", config.getBoolean("enabled-materials.iron"));
         itemCheck.blackListedMaterials.put("diamond", config.getBoolean("enabled-materials.diamond"));
-        itemCheck.blackListedMaterials.put("gold", config.getBoolean("enabled-materials.gold"));
+        itemCheck.blackListedMaterials.put("golden", config.getBoolean("enabled-materials.gold"));
     }
 }
