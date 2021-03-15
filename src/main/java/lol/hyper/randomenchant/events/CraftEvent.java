@@ -30,6 +30,13 @@ public class CraftEvent implements Listener {
             return;
         }
 
+        // Check if the item already has an enchantment.
+        // If we don't check this, the player can just keep spam clicking the
+        // result slot and enchant the same item constantly
+        if (event.getCurrentItem().getEnchantments().size() > 0) {
+            return;
+        }
+
         // If the item was clicked on the result slot of a crafting table
         if(event.getSlotType() == InventoryType.SlotType.RESULT) {
             ItemStack item = event.getCurrentItem();
