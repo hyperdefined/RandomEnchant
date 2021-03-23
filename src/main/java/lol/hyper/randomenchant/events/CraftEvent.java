@@ -40,8 +40,14 @@ public class CraftEvent implements Listener {
         // If the item was clicked on the result slot of a crafting table
         if(event.getSlotType() == InventoryType.SlotType.RESULT) {
             ItemStack item = event.getCurrentItem();
+
+            // Check if we want to enchant everything
+            if (randomEnchant.config.getBoolean("enchant-everything")) {
+                ItemStack newItem = randomEnchant.itemCheck.randomEnchantment(item);
+                event.setCurrentItem(newItem);
+            }
+
             // Check if the item can be enchanted
-            // If it can, enchant it and change the item that was returned
             if (randomEnchant.itemCheck.canWeEnchantThis(item)) {
                 ItemStack newItem = randomEnchant.itemCheck.randomEnchantment(item);
                 event.setCurrentItem(newItem);

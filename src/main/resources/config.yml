@@ -42,5 +42,9 @@ enabled-materials:
 # If you set this to false, you will get correct enchantments for items.
 enchant-items-with-unsupported-enchants: true
 
+# If you want to enchant everything you craft.
+# All of the checks for tools/armor/materials will be ignored.
+enchant-everything: false
+
 # No touch please :)
-config-version: 2
+config-version: 3
