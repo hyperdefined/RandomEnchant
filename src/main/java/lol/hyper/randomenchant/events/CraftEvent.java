@@ -38,7 +38,7 @@ public class CraftEvent implements Listener {
         }
 
         // If the item was clicked on the result slot of a crafting table
-        if(event.getSlotType() == InventoryType.SlotType.RESULT) {
+        if (event.getSlotType() == InventoryType.SlotType.RESULT) {
             ItemStack item = event.getCurrentItem();
 
             // Check if we want to enchant everything

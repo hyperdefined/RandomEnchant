@@ -15,10 +15,21 @@ public class ItemCheck {
     }
 
     // Hard code the different item types that we want to enchant
-    public final String[] enchantableItems = { "pickaxe", "sword", "shovel", "axe", "hoe", "bow", "helmet", "chestplate", "leggings", "boots" };
+    public final String[] enchantableItems = {
+            "pickaxe",
+            "sword",
+            "shovel",
+            "axe",
+            "hoe",
+            "bow",
+            "helmet",
+            "chestplate",
+            "leggings",
+            "boots"
+    };
 
     // Store which materials are blacklisted
-    public final HashMap<String, Boolean> blackListedMaterials = new HashMap<>();
+    public final HashMap < String, Boolean > blackListedMaterials = new HashMap < > ();
 
     /**
      * Checks if we can enchant the tool/armor.
@@ -46,7 +57,7 @@ public class ItemCheck {
 
         // Check the config first to see if the item is disabled
         // Check the material type after to see if it's disabled
-        switch(itemType) {
+        switch (itemType) {
             case "pickaxe":
                 if (randomEnchant.config.getBoolean("items-to-be-enchanted.tools.pickaxe")) {
                     return isMaterialExcluded(itemMaterial);
@@ -119,13 +130,13 @@ public class ItemCheck {
      */
     public ItemStack randomEnchantment(ItemStack item) {
         // Store all possible enchantments
-        List<Enchantment> possible = new ArrayList<>();
+        List < Enchantment > possible = new ArrayList < > ();
 
         // Check if we are gonna use unsupported enchants
         // If not, then only add supported enchants for that item
         // If we are, then just add all of them
         if (!randomEnchant.config.getBoolean("enchant-items-with-unsupported-enchants")) {
-            for (Enchantment ench : Enchantment.values()) {
+            for (Enchantment ench: Enchantment.values()) {
                 if (ench.canEnchantItem(item)) {
                     possible.add(ench);
                 }
@@ -158,7 +169,7 @@ public class ItemCheck {
             // Check if we want to use default vanilla limits
             // If not, use the min and max from the config
             if (randomEnchant.config.getBoolean("enchantment-level-range.use-default-limits")) {
-                item.addUnsafeEnchantment(chosen, 1 + (int) (Math.random() * ((chosen.getMaxLevel() - 1) + 1)));
+                item.addUnsafeEnchantment(chosen, 1 + (int)(Math.random() * ((chosen.getMaxLevel() - 1) + 1)));
             } else {
                 // Get a random level for the enchant
                 int randomLevel = r.nextInt((maxLevel - minLevel) + 1) + minLevel;
