@@ -16,9 +16,8 @@ import java.util.logging.Logger;
 public final class RandomEnchant extends JavaPlugin {
 
     public final File configFile = new File(this.getDataFolder(), "config.yml");
-    public FileConfiguration config;
     public final Logger logger = this.getLogger();
-
+    public FileConfiguration config;
     public ItemCheck itemCheck;
     public CraftEvent craftEvent;
     public CommandRandomEnchant commandRandomEnchant;
@@ -34,11 +33,11 @@ public final class RandomEnchant extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(craftEvent, this);
 
         new Updater(this, 89994).getVersion(version -> {
-        if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
-            logger.info("You are running the latest version.");
-        } else {
-            logger.info("There is a new version available! Please download at https://www.spigotmc.org/resources/randomenchant.89994/");
-        }
+            if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
+                logger.info("You are running the latest version.");
+            } else {
+                logger.info("There is a new version available! Please download at https://www.spigotmc.org/resources/randomenchant.89994/");
+            }
         });
         Metrics metrics = new Metrics(this, 10627);
     }

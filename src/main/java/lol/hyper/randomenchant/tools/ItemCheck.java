@@ -8,12 +8,6 @@ import java.util.*;
 
 public class ItemCheck {
 
-    private final RandomEnchant randomEnchant;
-
-    public ItemCheck(RandomEnchant randomEnchant) {
-        this.randomEnchant = randomEnchant;
-    }
-
     // Hard code the different item types that we want to enchant
     public final String[] enchantableItems = {
             "pickaxe",
@@ -27,12 +21,17 @@ public class ItemCheck {
             "leggings",
             "boots"
     };
-
     // Store which materials are blacklisted
-    public final HashMap < String, Boolean > blackListedMaterials = new HashMap < > ();
+    public final HashMap<String, Boolean> blackListedMaterials = new HashMap<>();
+    private final RandomEnchant randomEnchant;
+
+    public ItemCheck(RandomEnchant randomEnchant) {
+        this.randomEnchant = randomEnchant;
+    }
 
     /**
      * Checks if we can enchant the tool/armor.
+     *
      * @param item The item to check.
      * @return If the item can be enchanted or not.
      */
@@ -114,6 +113,7 @@ public class ItemCheck {
 
     /**
      * This will check to see if the item material is excluded.
+     *
      * @param material The item's material.
      * @return True if excluded, false if not.
      */
@@ -123,20 +123,22 @@ public class ItemCheck {
 
 
     // https://bukkit.org/threads/random-enchantment-on-an-item.280638/#post-2583381
+
     /**
      * Enchant an item randomly.
+     *
      * @param item The item to enchant.
      * @return The item with enchant(s) on them.
      */
     public ItemStack randomEnchantment(ItemStack item) {
         // Store all possible enchantments
-        List < Enchantment > possible = new ArrayList < > ();
+        List<Enchantment> possible = new ArrayList<>();
 
         // Check if we are gonna use unsupported enchants
         // If not, then only add supported enchants for that item
         // If we are, then just add all of them
         if (!randomEnchant.config.getBoolean("enchant-items-with-unsupported-enchants")) {
-            for (Enchantment ench: Enchantment.values()) {
+            for (Enchantment ench : Enchantment.values()) {
                 if (ench.canEnchantItem(item)) {
                     possible.add(ench);
                 }
@@ -169,7 +171,7 @@ public class ItemCheck {
             // Check if we want to use default vanilla limits
             // If not, use the min and max from the config
             if (randomEnchant.config.getBoolean("enchantment-level-range.use-default-limits")) {
-                item.addUnsafeEnchantment(chosen, 1 + (int)(Math.random() * ((chosen.getMaxLevel() - 1) + 1)));
+                item.addUnsafeEnchantment(chosen, 1 + (int) (Math.random() * ((chosen.getMaxLevel() - 1) + 1)));
             } else {
                 // Get a random level for the enchant
                 int randomLevel = r.nextInt((maxLevel - minLevel) + 1) + minLevel;
