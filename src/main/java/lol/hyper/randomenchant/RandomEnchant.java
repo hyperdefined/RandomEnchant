@@ -36,7 +36,8 @@ public final class RandomEnchant extends JavaPlugin {
             if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
                 logger.info("You are running the latest version.");
             } else {
-                logger.info("There is a new version available! Please download at https://www.spigotmc.org/resources/randomenchant.89994/");
+                logger.info(
+                        "There is a new version available! Please download at https://www.spigotmc.org/resources/randomenchant.89994/");
             }
         });
         Metrics metrics = new Metrics(this, 10627);
@@ -47,7 +48,7 @@ public final class RandomEnchant extends JavaPlugin {
             this.saveResource("config.yml", true);
         }
         config = YamlConfiguration.loadConfiguration(configFile);
-        int CONFIG_VERSION = 3;
+        int CONFIG_VERSION = 4;
         if (config.getInt("config-version") != CONFIG_VERSION) {
             logger.warning("You configuration is out of date! Some features may not work!");
         }
@@ -57,5 +58,6 @@ public final class RandomEnchant extends JavaPlugin {
         itemCheck.blackListedMaterials.put("iron", config.getBoolean("enabled-materials.iron"));
         itemCheck.blackListedMaterials.put("diamond", config.getBoolean("enabled-materials.diamond"));
         itemCheck.blackListedMaterials.put("golden", config.getBoolean("enabled-materials.gold"));
+        itemCheck.blackListedMaterials.put("netherite", config.getBoolean("enabled-materials.netherite"));
     }
 }

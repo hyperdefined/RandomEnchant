@@ -35,6 +35,7 @@ enabled-materials:
   iron: true
   diamond: true
   gold: true
+  netherite: true
 
 # Should we enchant regardless if the enchant is for the tool/armor?
 # This won't check if the enchant is supported on the item.
@@ -47,4 +48,4 @@ enchant-items-with-unsupported-enchants: true
 enchant-everything: false
 
 # No touch please :)
-config-version: 3
+config-version: 4

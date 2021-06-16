@@ -10,16 +10,7 @@ public class ItemCheck {
 
     // Hard code the different item types that we want to enchant
     public final String[] enchantableItems = {
-            "pickaxe",
-            "sword",
-            "shovel",
-            "axe",
-            "hoe",
-            "bow",
-            "helmet",
-            "chestplate",
-            "leggings",
-            "boots"
+        "pickaxe", "sword", "shovel", "axe", "hoe", "bow", "helmet", "chestplate", "leggings", "boots"
     };
     // Store which materials are blacklisted
     public final HashMap<String, Boolean> blackListedMaterials = new HashMap<>();
@@ -120,7 +111,6 @@ public class ItemCheck {
     private boolean isMaterialExcluded(String material) {
         return blackListedMaterials.get(material);
     }
-
 
     // https://bukkit.org/threads/random-enchantment-on-an-item.280638/#post-2583381
 

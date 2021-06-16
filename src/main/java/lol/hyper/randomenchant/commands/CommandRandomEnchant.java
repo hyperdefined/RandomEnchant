@@ -20,7 +20,8 @@ public class CommandRandomEnchant implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.GREEN + "RandomEnchant version " + randomEnchant.getDescription().getVersion() + ". Created by hyperdefined.");
+            sender.sendMessage(ChatColor.GREEN + "RandomEnchant version "
+                    + randomEnchant.getDescription().getVersion() + ". Created by hyperdefined.");
         } else if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (sender.isOp() || sender.hasPermission("randomenchant.reload")) {
