@@ -21,7 +21,7 @@ RandomEnchant will randomly enchant tools and armor when you craft them.
     * Allow unsupported enchantments on items.
 
 ## Documentation
-Visit the [wiki](https://github.com/hyperdefined/RandomEnchant/wiki) for help.
+Visit the [wiki](https://docs.hyper.lol/randomenchant) for help.
 
 ## License
 This plugin is released under GNU General Public License v3. See [LICENSE](https://github.com/hyperdefined/RandomEnchant/blob/master/LICENSE).
