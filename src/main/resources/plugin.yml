@@ -2,9 +2,15 @@ name: RandomEnchant
 version: ${project.version}
 main: lol.hyper.randomenchant.RandomEnchant
 api-version: 1.13
-authors: [ hyperdefined ]
+author: hyperdefined
+website: https://www.spigotmc.org/resources/randomenchant.89994/
+description: Randomly enchant tools and armor when you craft them.
 commands:
   randomenchant:
     aliases: [re]
     usage: /randomenchant
     description: Main command.
+permissions:
+  randomenchant.reload:
+    description: Allows the usage of /randomenchant reload
+    default: op
