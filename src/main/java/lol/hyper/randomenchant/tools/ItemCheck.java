@@ -1,3 +1,20 @@
+/*
+ * This file is part of RandomEnchant.
+ *
+ * RandomEnchant is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RandomEnchant is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with RandomEnchant.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package lol.hyper.randomenchant.tools;
 
 import lol.hyper.randomenchant.RandomEnchant;
@@ -10,7 +27,7 @@ public class ItemCheck {
 
     // Hard code the different item types that we want to enchant
     public final String[] enchantableItems = {
-        "pickaxe", "sword", "shovel", "axe", "hoe", "bow", "helmet", "chestplate", "leggings", "boots"
+            "pickaxe", "sword", "shovel", "axe", "hoe", "bow", "helmet", "chestplate", "leggings", "boots"
     };
     // Store which materials are blacklisted
     public final HashMap<String, Boolean> blackListedMaterials = new HashMap<>();
@@ -124,7 +141,7 @@ public class ItemCheck {
         // Store all possible enchantments
         List<Enchantment> possible = new ArrayList<>();
 
-        // Check if we are gonna use unsupported enchants
+        // Check if we are going to use unsupported enchants
         // If not, then only add supported enchants for that item
         // If we are, then just add all of them
         if (!randomEnchant.config.getBoolean("enchant-items-with-unsupported-enchants")) {
@@ -143,14 +160,9 @@ public class ItemCheck {
         int maxLevel = randomEnchant.config.getInt("enchantment-level-range.max");
 
         // Get how many enchants we want to add to the item
-        int totalEnchants;
-        if (randomEnchant.config.getBoolean("total-enchants-on-items.one-enchant")) {
-            totalEnchants = 1;
-        } else {
-            int minEnchants = randomEnchant.config.getInt("total-enchants-on-items.min");
-            int maxEnchants = randomEnchant.config.getInt("total-enchants-on-items.max");
-            totalEnchants = r.nextInt((maxEnchants - minEnchants) + 1) + minEnchants;
-        }
+        int minEnchants = randomEnchant.config.getInt("total-enchants-on-items.min");
+        int maxEnchants = randomEnchant.config.getInt("total-enchants-on-items.max");
+        int totalEnchants = r.nextInt((maxEnchants - minEnchants) + 1) + minEnchants;
 
         // Add the enchants
         for (int i = 0; i < totalEnchants; i++) {
@@ -163,7 +175,7 @@ public class ItemCheck {
             if (randomEnchant.config.getBoolean("enchantment-level-range.use-default-limits")) {
                 item.addUnsafeEnchantment(chosen, 1 + (int) (Math.random() * ((chosen.getMaxLevel() - 1) + 1)));
             } else {
-                // Get a random level for the enchant
+                // Get a random level for the enchantment
                 int randomLevel = r.nextInt((maxLevel - minLevel) + 1) + minLevel;
                 item.addUnsafeEnchantment(chosen, randomLevel);
             }
