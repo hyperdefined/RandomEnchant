@@ -45,4 +45,4 @@ enchant-items-with-unsupported-enchants: true
 enchant-everything: false
 
 # No touch please :)
-config-version: 4
+config-version: 5
