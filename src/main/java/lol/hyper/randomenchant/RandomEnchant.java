@@ -17,10 +17,11 @@
 
 package lol.hyper.randomenchant;
 
+import lol.hyper.githubreleaseapi.GitHubRelease;
+import lol.hyper.githubreleaseapi.GitHubReleaseAPI;
 import lol.hyper.randomenchant.commands.CommandRandomEnchant;
 import lol.hyper.randomenchant.events.CraftEvent;
 import lol.hyper.randomenchant.tools.ItemCheck;
-import lol.hyper.randomenchant.tools.Updater;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,6 +29,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public final class RandomEnchant extends JavaPlugin {
@@ -49,15 +51,9 @@ public final class RandomEnchant extends JavaPlugin {
 
         Bukkit.getServer().getPluginManager().registerEvents(craftEvent, this);
 
-        new Updater(this, 89994).getVersion(version -> {
-            if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
-                logger.info("You are running the latest version.");
-            } else {
-                logger.info(
-                        "There is a new version available! Please download at https://www.spigotmc.org/resources/randomenchant.89994/");
-            }
-        });
-        Metrics metrics = new Metrics(this, 10627);
+        new Metrics(this, 10627);
+
+        Bukkit.getScheduler().runTaskAsynchronously(this, this::checkForUpdates);
     }
 
     public void loadConfig() {
@@ -76,5 +72,28 @@ public final class RandomEnchant extends JavaPlugin {
         itemCheck.blackListedMaterials.put("diamond", config.getBoolean("enabled-materials.diamond"));
         itemCheck.blackListedMaterials.put("golden", config.getBoolean("enabled-materials.gold"));
         itemCheck.blackListedMaterials.put("netherite", config.getBoolean("enabled-materials.netherite"));
+    }
+
+    public void checkForUpdates() {
+        GitHubReleaseAPI api;
+        try {
+            api = new GitHubReleaseAPI("RandomEnchant", "hyperdefined");
+        } catch (IOException e) {
+            logger.warning("Unable to check updates!");
+            e.printStackTrace();
+            return;
+        }
+        GitHubRelease current = api.getReleaseByTag(this.getDescription().getVersion());
+        GitHubRelease latest = api.getLatestVersion();
+        if (current == null) {
+            logger.warning("You are running a version that does not exist on GitHub. If you are in a dev environment, you can ignore this. Otherwise, this is a bug!");
+            return;
+        }
+        int buildsBehind = api.getBuildsBehind(current);
+        if (buildsBehind == 0) {
+            logger.info("You are running the latest version.");
+        } else {
+            logger.warning("A new version is available (" + latest.getTagVersion() + ")! You are running version " + current.getTagVersion() + ". You are " + buildsBehind + " version(s) behind.");
+        }
     }
 }
