@@ -27,11 +27,12 @@ public class ItemCheck {
 
     // Hard code the different item types that we want to enchant
     public final String[] enchantableItems = {
-            "pickaxe", "sword", "shovel", "axe", "hoe", "bow", "helmet", "chestplate", "leggings", "boots"
+            "pickaxe", "sword", "shovel", "axe", "hoe", "bow", "helmet", "chestplate", "leggings", "boots", "fishing"
     };
     // Store which materials are blacklisted
     public final HashMap<String, Boolean> blackListedMaterials = new HashMap<>();
     private final RandomEnchant randomEnchant;
+    public List<Enchantment> possibleEnchantsFromConfig = new ArrayList<>();
 
     public ItemCheck(RandomEnchant randomEnchant) {
         this.randomEnchant = randomEnchant;
@@ -44,6 +45,11 @@ public class ItemCheck {
      * @return If the item can be enchanted or not.
      */
     public boolean canWeEnchantThis(ItemStack item) {
+        // Skip all checks if we want to enchant all items crafted
+        if (randomEnchant.config.getBoolean("enchant-everything")) {
+            return true;
+        }
+
         String itemName = item.getType().toString().toLowerCase();
 
         // Check if the item is a tool or armor piece
@@ -52,15 +58,26 @@ public class ItemCheck {
             return false;
         }
 
-        // Hard code bows since it doesn't follow the same name conventions as armor/tools
-        String itemType;
+        // Hard code bows and fishing rods since they don't follow the same name conventions as armor/tools
+        String itemType = null;
         String itemMaterial = null;
-        if (!itemName.equals("bow")) {
+
+        if (itemName.contains("bow") || itemName.contains("fishing")) {
+            if (itemName.contains("bow")) {
+                itemType = "bow";
+            }
+            if (itemName.contains("fishing")) {
+                itemType = "fishingrod";
+            }
+        } else {
             itemType = itemName.substring(itemName.indexOf("_") + 1);
             itemMaterial = itemName.substring(0, itemName.indexOf("_"));
-        } else {
-            itemType = "bow";
         }
+
+        if (itemType == null) {
+            return false;
+        }
+
 
         // Check the config first to see if the item is disabled
         // Check the material type after to see if it's disabled
@@ -115,6 +132,11 @@ public class ItemCheck {
                     return isMaterialExcluded(itemMaterial);
                 }
                 break;
+            case "fishingrod":
+                if (randomEnchant.config.getBoolean("items-to-be-enchanted.tools.fishingrod")) {
+                    return true;
+                }
+                break;
         }
         return false;
     }
@@ -141,17 +163,21 @@ public class ItemCheck {
         // Store all possible enchantments
         List<Enchantment> possible = new ArrayList<>();
 
+        // See if we want to enchant all items
+        boolean enchantEverything = randomEnchant.config.getBoolean("enchant-everything");
+
         // Check if we are going to use unsupported enchants
         // If not, then only add supported enchants for that item
         // If we are, then just add all of them
-        if (!randomEnchant.config.getBoolean("enchant-items-with-unsupported-enchants")) {
-            for (Enchantment ench : Enchantment.values()) {
+        // We use "enchantEverything" here because regular items do not have "valid" enchants, so we skip this check and add all
+        if (!enchantEverything || !randomEnchant.config.getBoolean("enchant-items-with-unsupported-enchants")) {
+            for (Enchantment ench : possibleEnchantsFromConfig) {
                 if (ench.canEnchantItem(item)) {
                     possible.add(ench);
                 }
             }
         } else {
-            possible.addAll(Arrays.asList(Enchantment.values()));
+            possible.addAll(possibleEnchantsFromConfig);
         }
 
         Random r = new Random();
@@ -164,12 +190,26 @@ public class ItemCheck {
         int maxEnchants = randomEnchant.config.getInt("total-enchants-on-items.max");
         int totalEnchants = r.nextInt((maxEnchants - minEnchants) + 1) + minEnchants;
 
+        if (possibleEnchantsFromConfig.isEmpty()) {
+            randomEnchant.logger.warning("There are no enchantments on the list! Not enchanting item!");
+            return null;
+        }
+
+        if (possible.isEmpty()) {
+            randomEnchant.logger.warning("There are no possible enchantments for item " + item.getType() + " that are present in your config.");
+            return null;
+        }
+
         // Add the enchants
         for (int i = 0; i < totalEnchants; i++) {
             // Shuffle the list of enchants for more rng
             Collections.shuffle(possible);
             // Get a random enchant from the list
             Enchantment chosen = possible.get((r.nextInt(possible.size())));
+            // If the enchantment is not on the list, re-roll it
+            while (!possibleEnchantsFromConfig.contains(chosen)) {
+                chosen = possible.get((r.nextInt(possible.size())));
+            }
             // Check if we want to use default vanilla limits
             // If not, use the min and max from the config
             if (randomEnchant.config.getBoolean("enchantment-level-range.use-default-limits")) {

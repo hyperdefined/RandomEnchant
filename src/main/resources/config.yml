@@ -19,6 +19,7 @@ items-to-be-enchanted:
     axe: true
     hoe: true
     bow: true
+    fishingrod: true
   armor:
     helmet: true
     chestplate: true
@@ -34,6 +35,42 @@ enabled-materials:
   gold: true
   netherite: true
 
+# Enchantments on this list will be used.
+# By default, all enchantments are here.
+# Remove ones you do not want.
+# See valid IDs: https://minecraft.fandom.com/el/wiki/Enchanting/ID
+enchantments:
+  - aqua_affinity
+  - bane_of_arthropods
+  - binding_curse
+  - blast_protection
+  - depth_strider
+  - efficiency
+  - feather_falling
+  - fire_aspect
+  - fire_protection
+  - flame
+  - fortune
+  - frost_walker
+  - infinity
+  - knockback
+  - looting
+  - luck_of_the_sea
+  - lure
+  - mending
+  - power
+  - projectile_protection
+  - protection
+  - punch
+  - respiration
+  - sharpness
+  - silk_touch
+  - smite
+  - sweeping
+  - thorns
+  - unbreaking
+  - vanishing_curse
+
 # Should we enchant regardless if the enchantment is for the tool/armor?
 # This won't check if the enchantment is supported on the item.
 # Example: sharpness on armor, silk touch on swords, etc.
@@ -45,4 +82,4 @@ enchant-items-with-unsupported-enchants: true
 enchant-everything: false
 
 # No touch please :)
-config-version: 5
+config-version: 6

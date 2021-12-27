@@ -24,8 +24,10 @@ import lol.hyper.randomenchant.events.CraftEvent;
 import lol.hyper.randomenchant.tools.ItemCheck;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -61,7 +63,7 @@ public final class RandomEnchant extends JavaPlugin {
             this.saveResource("config.yml", true);
         }
         config = YamlConfiguration.loadConfiguration(configFile);
-        int CONFIG_VERSION = 5;
+        int CONFIG_VERSION = 6;
         if (config.getInt("config-version") != CONFIG_VERSION) {
             logger.warning("You configuration is out of date! Some features may not work!");
         }
@@ -72,6 +74,12 @@ public final class RandomEnchant extends JavaPlugin {
         itemCheck.blackListedMaterials.put("diamond", config.getBoolean("enabled-materials.diamond"));
         itemCheck.blackListedMaterials.put("golden", config.getBoolean("enabled-materials.gold"));
         itemCheck.blackListedMaterials.put("netherite", config.getBoolean("enabled-materials.netherite"));
+
+        for (String key : config.getStringList("enchantments")) {
+            itemCheck.possibleEnchantsFromConfig.clear();
+            Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(key.toLowerCase()));
+            itemCheck.possibleEnchantsFromConfig.add(enchantment);
+        }
     }
 
     public void checkForUpdates() {
