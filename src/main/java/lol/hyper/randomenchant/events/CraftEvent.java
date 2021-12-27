@@ -21,8 +21,12 @@ import lol.hyper.randomenchant.RandomEnchant;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.CraftingInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.SmithingInventory;
 
 public class CraftEvent implements Listener {
 
@@ -33,41 +37,48 @@ public class CraftEvent implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClick(CraftItemEvent event) {
+    public void onInventoryClick(InventoryClickEvent event) {
         // Check if the event was cancelled, so we don't break shit
         // Also check if the item is null
         if (event.isCancelled() || event.getCurrentItem() == null) {
             return;
         }
 
-        // Check if the item already has an enchantment.
-        // If we don't check this, the player can just keep spam clicking the
-        // result slot and enchant the same item constantly
-        if (event.getCurrentItem().getEnchantments().size() > 0) {
-            return;
-        }
-        ItemStack item = event.getCurrentItem();
-
-        // Check if we want to enchant everything
-        if (randomEnchant.config.getBoolean("enchant-everything")) {
-            ItemStack newItem = randomEnchant.itemCheck.randomEnchantment(item);
-            if (newItem == null) {
-                randomEnchant.logger.warning("Item returned null!");
+        // Only check crafting/smithing inventories
+        Inventory clicked = event.getInventory();
+        if (clicked instanceof CraftingInventory || clicked instanceof SmithingInventory) {
+            // Check if the item already has an enchantment.
+            // If we don't check this, the player can just keep spam clicking the
+            // result slot and enchant the same item constantly
+            if (event.getCurrentItem().getEnchantments().size() > 0) {
                 return;
             }
-            event.setCurrentItem(newItem);
-            event.setResult(Event.Result.ALLOW);
-        }
 
-        // Check if the item can be enchanted
-        if (randomEnchant.itemCheck.canWeEnchantThis(item)) {
-            ItemStack newItem = randomEnchant.itemCheck.randomEnchantment(item);
-            if (newItem == null) {
-                randomEnchant.logger.warning("Item returned null!");
-                return;
+            if (event.getSlotType() == InventoryType.SlotType.RESULT) {
+                ItemStack item = event.getCurrentItem();
+
+                // Check if we want to enchant everything
+                if (randomEnchant.config.getBoolean("enchant-everything")) {
+                    ItemStack newItem = randomEnchant.itemCheck.randomEnchantment(item);
+                    if (newItem == null) {
+                        randomEnchant.logger.warning("Item returned null!");
+                        return;
+                    }
+                    event.setCurrentItem(newItem);
+                    event.setResult(Event.Result.ALLOW);
+                }
+
+                // Check if the item can be enchanted
+                if (randomEnchant.itemCheck.canWeEnchantThis(item)) {
+                    ItemStack newItem = randomEnchant.itemCheck.randomEnchantment(item);
+                    if (newItem == null) {
+                        randomEnchant.logger.warning("Item returned null!");
+                        return;
+                    }
+                    event.setCurrentItem(newItem);
+                    event.setResult(Event.Result.ALLOW);
+                }
             }
-            event.setCurrentItem(newItem);
-            event.setResult(Event.Result.ALLOW);
         }
     }
 }
