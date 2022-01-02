@@ -75,8 +75,9 @@ public final class RandomEnchant extends JavaPlugin {
         itemCheck.blackListedMaterials.put("golden", config.getBoolean("enabled-materials.gold"));
         itemCheck.blackListedMaterials.put("netherite", config.getBoolean("enabled-materials.netherite"));
 
+
+        itemCheck.possibleEnchantsFromConfig.clear();
         for (String key : config.getStringList("enchantments")) {
-            itemCheck.possibleEnchantsFromConfig.clear();
             Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(key.toLowerCase()));
             itemCheck.possibleEnchantsFromConfig.add(enchantment);
         }
