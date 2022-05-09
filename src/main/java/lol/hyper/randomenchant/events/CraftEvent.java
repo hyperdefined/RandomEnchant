@@ -18,6 +18,7 @@
 package lol.hyper.randomenchant.events;
 
 import lol.hyper.randomenchant.RandomEnchant;
+import lol.hyper.randomenchant.tools.ItemCheck;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,9 +32,11 @@ import org.bukkit.inventory.SmithingInventory;
 public class CraftEvent implements Listener {
 
     private final RandomEnchant randomEnchant;
+    private final ItemCheck itemCheck;
 
     public CraftEvent(RandomEnchant randomEnchant) {
         this.randomEnchant = randomEnchant;
+        this.itemCheck = randomEnchant.itemCheck;
     }
 
     @EventHandler
@@ -59,7 +62,7 @@ public class CraftEvent implements Listener {
 
                 // Check if we want to enchant everything
                 if (randomEnchant.config.getBoolean("enchant-everything")) {
-                    ItemStack newItem = randomEnchant.itemCheck.randomEnchantment(item);
+                    ItemStack newItem = itemCheck.randomEnchantment(item);
                     if (newItem == null) {
                         randomEnchant.logger.warning("Item returned null!");
                         return;
@@ -69,8 +72,8 @@ public class CraftEvent implements Listener {
                 }
 
                 // Check if the item can be enchanted
-                if (randomEnchant.itemCheck.canWeEnchantThis(item)) {
-                    ItemStack newItem = randomEnchant.itemCheck.randomEnchantment(item);
+                if (itemCheck.canWeEnchantThis(item)) {
+                    ItemStack newItem = itemCheck.randomEnchantment(item);
                     if (newItem == null) {
                         randomEnchant.logger.warning("Item returned null!");
                         return;

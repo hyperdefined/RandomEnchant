@@ -22,6 +22,7 @@ import lol.hyper.githubreleaseapi.GitHubReleaseAPI;
 import lol.hyper.randomenchant.commands.CommandRandomEnchant;
 import lol.hyper.randomenchant.events.CraftEvent;
 import lol.hyper.randomenchant.tools.ItemCheck;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -42,9 +43,11 @@ public final class RandomEnchant extends JavaPlugin {
     public ItemCheck itemCheck;
     public CraftEvent craftEvent;
     public CommandRandomEnchant commandRandomEnchant;
+    private BukkitAudiences adventure;
 
     @Override
     public void onEnable() {
+        this.adventure = BukkitAudiences.create(this);
         itemCheck = new ItemCheck(this);
         craftEvent = new CraftEvent(this);
         commandRandomEnchant = new CommandRandomEnchant(this);
@@ -104,5 +107,12 @@ public final class RandomEnchant extends JavaPlugin {
         } else {
             logger.warning("A new version is available (" + latest.getTagVersion() + ")! You are running version " + current.getTagVersion() + ". You are " + buildsBehind + " version(s) behind.");
         }
+    }
+
+    public BukkitAudiences getAdventure() {
+        if(this.adventure == null) {
+            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+        }
+        return this.adventure;
     }
 }
